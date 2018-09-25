@@ -81,9 +81,59 @@ fn modify(jason_hash: &HashMap<&str, &str>) -> Result<Value, &'static str> {
     }
 }
 
-fn create_subaccount(name: String, enabled: bool) -> Result<Value, &'static str> {
+pub fn create_subaccount(name: String, enabled: String) -> Result<Value, &'static str> {
     let built_url = format!(
         "https://api.plivo.com/v1/Account/{}/Subaccount/",
         &var("PLIVO_AUTH_ID").unwrap()
     );
+    let chars_to_trim: &[char] = &['"'];
+    let mut jason_hash: HashMap<&str, &str> = HashMap::new();
+    jason_hash.insert("name", name.trim_matches(chars_to_trim));
+    jason_hash.insert("enabled", enabled.trim_matches(chars_to_trim));
+    let client = Client::new();
+    let mut res = client
+        .post(&built_url)
+        .basic_auth(
+            var("PLIVO_AUTH_ID").unwrap().to_string(),
+            Some(var("PLIVO_AUTH_TOKEN").unwrap().to_string()),
+        ).json(&jason_hash)
+        .send()
+        .unwrap();
+    let mut v: Value = serde_json::from_str("{}".as_ref()).unwrap();
+    println!("{:?}", res.status());
+    if res.status().is_success() {
+        v = serde_json::from_str(&res.text().unwrap()).unwrap();
+        return Ok(v);
+    } else {
+        return Err("eee");
+    }
+}
+
+pub fn modify_subaccount(name: String, enabled: String, subauth_id: String) -> Result<Value, &'static str> {
+    let chars_to_trim: &[char] = &['"'];
+    let built_url = format!(
+        "https://api.plivo.com/v1/Account/{AUTH}/Subaccount/{SUBAUTH}",
+        AUTH = &var("PLIVO_AUTH_ID").unwrap(),
+        SUBAUTH = subauth_id.trim_matches(chars_to_trim)
+    );
+    let mut jason_hash: HashMap<&str, &str> = HashMap::new();
+    jason_hash.insert("name", name.trim_matches(chars_to_trim));
+    jason_hash.insert("enabled", enabled.trim_matches(chars_to_trim));
+    let client = Client::new();
+    let mut res = client
+        .post(&built_url)
+        .basic_auth(
+            var("PLIVO_AUTH_ID").unwrap().to_string(),
+            Some(var("PLIVO_AUTH_TOKEN").unwrap().to_string()),
+        ).json(&jason_hash)
+        .send()
+        .unwrap();
+    let mut v: Value = serde_json::from_str("{}".as_ref()).unwrap();
+    println!("{:?}", res.status());
+    if res.status().is_success() {
+        v = serde_json::from_str(&res.text().unwrap()).unwrap();
+        return Ok(v);
+    } else {
+        return Err("eee");
+    }
 }
