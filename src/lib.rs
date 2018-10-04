@@ -5,8 +5,8 @@ extern crate url;
 #[macro_use]
 extern crate serde_derive;
 use dotenv::var;
-use serde_json::{Error, Value};
 use reqwest::Client;
+use serde_json::{Error, Value};
 use std::collections::HashMap;
 extern crate serde;
 extern crate serde_json;
