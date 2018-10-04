@@ -22,7 +22,7 @@ fn main() {
         "iasdas {:?}",
         plivo_sdk_rust::account::operations::modify_city("mike222".to_string())
     );*/
-/*    thread::sleep(ten_millis);
+    /*    thread::sleep(ten_millis);
     println!(
         "Hello in English: {}",
         plivo_sdk_rust::account::subaccount::operations::details().to_string()

@@ -1,11 +1,8 @@
 use dotenv::var;
 use generic_post;
-use reqwest::Client;
-use reqwest::StatusCode;
-use serde_json;
-use serde_json::{Error, Value};
+use generic_get;
 use std::collections::HashMap;
-
+use serde_json::{Error, Value};
 pub fn create_subaccount(name: String, enabled: String) -> Result<Value, &'static str> {
     let chars_to_trim: &[char] = &['"'];
     let mut map: HashMap<&str, &str> = HashMap::new();
@@ -38,6 +35,15 @@ pub fn modify_subaccount(
         &map,
     )
 }
+pub fn details_all(limit: u16, offset: u16) -> Result<Value, &'static str> {
+    generic_get(
+        format!(
+            "https://api.plivo.com/v1/Account/{}/Subaccount/?limit={}&offset={}",
+            &var("PLIVO_AUTH_ID").unwrap(), limit, offset
+        )
+    )
+}
+
 pub fn delete() -> String {
     "sub acc delete".to_string()
 }
