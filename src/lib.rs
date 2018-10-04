@@ -50,3 +50,21 @@ fn generic_get(built_url: String) -> Result<Value, &'static str> {
         return Err("eee");
     }
 }
+
+fn generic_delete(built_url: String) -> Result<Value, &'static str> {
+    let client = Client::new();
+    let mut res = client
+        .delete(&built_url)
+        .basic_auth(
+            var("PLIVO_AUTH_ID").unwrap().to_string(),
+            Some(var("PLIVO_AUTH_TOKEN").unwrap().to_string()),
+        ).send()
+        .unwrap();
+    let mut v: Value = serde_json::from_str("{}".as_ref()).unwrap();
+    if res.status().is_success() {
+        v = serde_json::from_str(&res.text().unwrap()).unwrap();
+        return Ok(v);
+    } else {
+        return Err("eee");
+    }
+}
