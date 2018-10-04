@@ -1,39 +1,13 @@
 use dotenv::var;
+use generic_get;
 use generic_post;
-use reqwest::Client;
-use reqwest::StatusCode;
-use serde_json;
 use serde_json::{Error, Value};
 use std::collections::HashMap;
-pub fn details() -> Value {
-    let built_url = format!(
+pub fn details() -> Result<Value, &'static str> {
+    generic_get(format!(
         "https://api.plivo.com/v1/Account/{}/",
         &var("PLIVO_AUTH_ID").unwrap()
-    );
-    let client = Client::new();
-    let mut res = client
-        .get(&built_url)
-        .basic_auth(
-            var("PLIVO_AUTH_ID").unwrap().to_string(),
-            Some(var("PLIVO_AUTH_TOKEN").unwrap().to_string()),
-        ).send()
-        .unwrap();
-    let mut v: Value = serde_json::from_str("{}".as_ref()).unwrap();
-    if res.status().is_success() {
-        v = serde_json::from_str(&res.text().unwrap()).unwrap();
-        return v;
-    } else {
-        match res.status() {
-            StatusCode::Ok => println!("success!"),
-            StatusCode::PayloadTooLarge => {
-                println!("Request payload is too large!");
-            }
-            s => println!("Received response status: {:?}", s),
-            _ => println!("{:?}", res.status()),
-        };
-    }
-
-    v
+    ))
 }
 
 pub fn modify_name(name: String) -> Result<Value, &'static str> {
