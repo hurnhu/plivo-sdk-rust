@@ -1,4 +1,5 @@
 use dotenv::var;
+use generic_delete;
 use generic_get;
 use generic_post;
 use serde_json::{Error, Value};
@@ -53,6 +54,10 @@ pub fn details_specific(subauth_id: String) -> Result<Value, &'static str> {
     ))
 }
 
-pub fn delete() -> String {
-    "sub acc delete".to_string()
+pub fn delete_subaccount(subauth_id: String) -> Result<Value, &'static str> {
+    generic_delete(format!(
+        "https://api.plivo.com/v1/Account/{}/Subaccount/{}/",
+        &var("PLIVO_AUTH_ID").unwrap(),
+        subauth_id
+    ))
 }
