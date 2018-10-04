@@ -1,4 +1,6 @@
 pub mod account;
+pub mod message;
+
 extern crate dotenv;
 extern crate reqwest;
 extern crate url;
