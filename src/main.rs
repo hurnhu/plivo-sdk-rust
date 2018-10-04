@@ -5,7 +5,7 @@ fn main() {
     //        "Hello in English: {}",
     //        plivo_sdk_rust::account::operations::details()
     //    );
-    let ten_millis = time::Duration::from_millis(1000);
+/*    let ten_millis = time::Duration::from_millis(1000);
     let now = time::Instant::now();
     println!(
         "iasdas {:?}",
@@ -21,12 +21,12 @@ fn main() {
     println!(
         "iasdas {:?}",
         plivo_sdk_rust::account::operations::modify_city("mike222".to_string())
-    );
-    thread::sleep(ten_millis);
+    );*/
+/*    thread::sleep(ten_millis);
     println!(
         "Hello in English: {}",
-        plivo_sdk_rust::account::operations::details().to_string()
-    );
+        plivo_sdk_rust::account::subaccount::operations::details().to_string()
+    );*/
     /*    println!(
         "iasdas {:?}",
         plivo_sdk_rust::account::operations::create_subaccount(
